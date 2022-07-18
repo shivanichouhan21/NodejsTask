@@ -1,4 +1,5 @@
 const dbConfig = require("../config/db.config.js");
+const { applyExtraSetup } = require('./extra-setup');
 
 const Sequelize = require("sequelize");
 const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
@@ -26,4 +27,6 @@ db.imdb_actor_role = require("./imdb_actor_roles")(sequelize,Sequelize)
 db.director_generes = require("./director_genere")(sequelize,Sequelize)
 db.movies_directors = require("./movie_dir")(sequelize,Sequelize);
 db.movies_genre = require("./movie_genre")(sequelize,Sequelize)
+applyExtraSetup(sequelize);
+
 module.exports = db;

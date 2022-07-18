@@ -7,6 +7,10 @@ const Director_genere = db.director_generes
 const movies_directors = db.movies_directors
 const movie_genre = db.movies_genre
 
+
+// User.hasMany(Invoice);
+// Invoice.belongsTo(User);
+
 exports.findAllMovies = (req, res) => {
     //     const title = req.query.title;
     //     var condition = title ? { title: { [Op.like]: ‘% ${ title }%’
@@ -47,10 +51,6 @@ exports.findAllMoviesByPagination = (req, res) => {
         });
 };
 
-// director.belongsToMany(director, { through: movies_directors });
-// Imdb_movies.belongsToMany(Imdb_movies, { through: movies_directors });
-// (director as a).belongsToMany(Server, { through: 'Server_User' });
-// (director as a).belongsToMany(User, { through: 'Server_User' });
 exports.findAlldirector = (req, res) => {
     let limit = 10;   // number of records per page
     let offset = 0;
@@ -94,17 +94,54 @@ exports.findAlldirector = (req, res) => {
 exports.Actors_list = (req, res) => {
     let limit = 10;   // number of records per page
     let offset = 0;
-    movies_directors.findAll({
-        where: {},
+
+    Imdb_actor_movies.findAll( {
         include: [{
-            model: 'imdb_movies',
-            where: {}
+          model: Imdb_actor_movies,
+        //   as: 'imdb_actor_role',
+          attributes: ['first_name'],
+        //   through: {
+        //     attributes: ['meassurementAmount', 'meassurementType']
+        //   }
         }]
-      }).then((data) => {
-            
-            console.log("*********************\n\n\n\n\n",data);
-            res.send(data)
+      })
+      .then((recipe) => {
+        if (!recipe) {
+          return res.status(404).json({ message: 'Recipe Not Found' });
+        }
+  
+        return res.status(200).json(recipe);
+      })
+      .catch((error) => {
+        console.log(error);
+        res.status(400).json(error)
       });
+
+
+    // Imdb_actor_movies.findAll({
+    //     include: [
+    //         // {
+    //             // as:"actors",
+    //             Tutorial
+            
+    //         // },
+    //         ]
+    //   }).then(posts => {
+    //     /* ... */
+    //     console.log("*********************\n\n\n\n\n",posts);
+    //     res.send(posts)
+    //   });
+
+    // movies_directors.findAll({
+    //     where: {},
+    //     include: [{
+    //         model: 'imdb_movies',
+    //         where: {}
+    //     }]
+    //   }).then((data) => {
+            
+           
+    //   });
 
     // Imdb_movies.findAndCountAll()
     //     .then((data) => {
