@@ -16,7 +16,7 @@ db.sequelize.sync();
 // genre_dir()
 // movies_director()
 // movies_genres()
-// movies_genres()
+// genre_dir()
 // upload_movies_actor_role()
 // upload_movies_actor_role()
 let port = 8000;

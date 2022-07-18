@@ -1,5 +1,5 @@
 function applyExtraSetup(sequelize) {
-    const { imdb_actor, IMDBmovie,IMDB_Movies_genre, imdb_actor_role} = sequelize.models;
+    const { imdb_actor, IMDBmovie,IMDB_Movies_genre,imdb_directors,Movies_director,director_genere, imdb_actor_role} = sequelize.models;
 
     imdb_actor.hasMany(imdb_actor_role, {
         foreignKey : 'actor_id',
@@ -26,10 +26,24 @@ function applyExtraSetup(sequelize) {
         targetKey: 'movie_id'
       });
       
-    //   user.hasMany(comment, {
-    //     foreignKey : 'userId',
-    //     targetKey: 'id'
-    //   });
+      imdb_directors.hasMany(Movies_director, {
+        foreignKey : 'director_id',
+        targetKey: 'id'
+      });
+
+      Movies_director.belongsTo(imdb_directors, {
+        foreignKey : 'director_id',
+        targetKey: 'id'
+      });
+      imdb_directors.hasMany(director_genere, {
+        foreignKey : 'director_id',
+        targetKey: 'id'
+      });
+
+      director_genere.belongsTo(imdb_directors, {
+        foreignKey : 'director_id',
+        targetKey: 'id'
+      });
 }
 
 module.exports = { applyExtraSetup };

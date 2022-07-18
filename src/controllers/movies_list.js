@@ -9,13 +9,26 @@ const movie_genre = db.movies_genre
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 
-exports.findAllMovies = (req, res) => {
-    //     const title = req.query.title;
-    //     var condition = title ? { title: { [Op.like]: ‘% ${ title }%’
-    // }}: null;
 
-    Imdb_movies.findAll().then(data => {
-        res.send(data);
+
+
+
+exports.findAllMovies = (req, res) => {
+    movie_genre.findAll({
+        where: { genre: req.query.genre },
+        include: [{
+            model: Imdb_movies,
+            attributes: ["movie_id", 'name', "year", "rank"]
+        }
+        ]
+    }).then(async (data) => {
+        if (!data) {
+            return res.status(404).json({ message: 'movies Not Found' });
+        } else {
+            let page = req.query.page;
+            data.slice((page - 1) * 10, page * 10);
+            res.send({ data: data});
+        }
     }).catch(err => {
         res.status(500).send({
             message:
@@ -26,68 +39,6 @@ exports.findAllMovies = (req, res) => {
 
 
 
-// exports.findAllMoviesByPagination = (req, res) => {
-//     let limit = 10;   // number of records per page
-//     let offset = 0;
-//     Imdb_movies.findAndCountAll()
-//         .then((data) => {
-//             let page = req.query.page;
-//             let pages = Math.ceil(data.count / limit);
-//             offset = limit * (page - 1);
-//             Imdb_movies.findAll({
-//                 // attributes: ['id', 'first_name', 'last_name', 'date_of_birth'],
-//                 limit: limit,
-//                 offset: offset,
-//                 $sort: { id: 1 }
-//             })
-//                 .then((users) => {
-//                     res.status(200).json({ 'result': users, 'count': data.count, 'pages': pages });
-//                 });
-//         })
-//         .catch(function (error) {
-//             res.status(500).send('Internal Server Error');
-//         });
-// };
-
-// exports.findAlldirector = (req, res) => {
-//     let limit = 10;   // number of records per page
-//     let offset = 0;
-//     movies_directors.findAll({
-//         // where: {},
-//         model: Imdb_movies,
-//         include: [{
-//             model: Imdb_movies,
-//             as: "imdb_movies"
-//         }
-//         ]
-//     }).then((data) => {
-
-//         console.log("*********************\n\n\n\n\n", data);
-//         res.send(data)
-//     });
-
-//     // Imdb_movies.findAndCountAll()
-//     //     .then((data) => {
-//     //         let page = req.query.page;
-//     //         let director = req.query.director      // page number
-//     //         let pages = Math.ceil(data.count / limit);
-//     //         offset = limit * (page - 1);
-//     //         Imdb_movies.findAll({
-//     //             // attributes: ['id', 'first_name', 'last_name', 'date_of_birth'],
-//     //             limit: limit,
-//     //             offset: offset,
-//     //             $sort: { id: 1 }
-//     //         })
-//     //             .then((users) => {
-//     //                 res.status(200).json({ 'result': users, 'count': data.count, 'pages': pages });
-//     //             });
-//     //     })
-//     //     .catch(function (error) {
-//     //         res.status(500).send('Internal Server Error');
-//     //     });
-// };
-
-
 exports.Actors_list = (req, res) => {
     let top_genres = []
     let obj = {}
@@ -95,7 +46,6 @@ exports.Actors_list = (req, res) => {
     Imdb_actor_movies.findAll({
         where: { actor_id: req.params.id },
         include: [{
-
             model: Tutorial,
             attributes: ['first_name', "actor_id"],
         }, {
@@ -105,7 +55,7 @@ exports.Actors_list = (req, res) => {
     })
         .then(async (actor_data) => {
             if (!actor_data) {
-                return res.status(404).json({ message: 'Recipe Not Found' });
+                return res.status(404).json({ message: 'actor Not Found' });
             } else {
                 let partnerActorData = []
 
@@ -147,7 +97,7 @@ exports.Actors_list = (req, res) => {
                             obj.number_of_movies = allMovies
                             let partner_actor_main_data = []
 
-                            const result =await  [...partnerActorData.reduce((mp, o) => {
+                            const result = await [...partnerActorData.reduce((mp, o) => {
                                 let objD = o.toJSON()
                                 if (!mp.has(objD.movies_id)) mp.set(objD.movies_id, { ...objD, count: 0 });
                                 mp.get(objD.movies_id).count++;
@@ -158,7 +108,7 @@ exports.Actors_list = (req, res) => {
                                     partner_actor_id: element.actor_id,
                                     partner_actor_name: element["imdb_actor"]["first_name"],
                                     moviesName: element["IMDBmovie"]["name"],
-                                    number_of_shared_movies:element.count
+                                    number_of_shared_movies: element.count
 
                                 })
                             });
@@ -166,7 +116,7 @@ exports.Actors_list = (req, res) => {
 
                         })
 
-                    return res.status(200).json( obj);
+                    return res.status(200).json(obj);
                 } else {
                     return res.status(200).json({ msg: "data not found" })
                 }
