@@ -5,9 +5,9 @@ const upload = require("../middlewares/upload");
 
 let routes = (app) => {
   router.get("/all_movies",excelController.findAllMovies);
-  router.get("/movies_by_pagination", excelController.findAllMoviesByPagination);
-router.get("/findAlldirector",excelController.findAlldirector)
-  router.get("/Actors_list", excelController.Actors_list);
+//   router.get("/movies_by_pagination", excelController.findAllMoviesByPagination);
+// router.get("/findAlldirector",excelController.findAlldirector)
+  router.get("/Actors_list/:id", excelController.Actors_list);
 
   app.use("/api", router);
 };

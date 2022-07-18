@@ -122,7 +122,7 @@ exports.upload_Imdb_movies = async (req, res) => {
 
       rows.forEach((row) => {
         let tutorial = {
-          movies_id: row[0],
+          movie_id: row[0],
           name: row[1],
           year: row[2],
           rank: row[3]
@@ -170,9 +170,9 @@ exports.upload_movies_actor_role = async (req, res) => {
 
       let tutorials = [];
 
-      rows.forEach((row) => {
+      rows.forEach((row,index) => {
         let tutorial = {
-          actor_role_ids: row[0],
+          actor_role_ids:index,
           actor_id: row[0],
           movie_id: row[1],
           role: row[2]
@@ -377,7 +377,7 @@ exports.movies_genres = async (req, res) => {
         console.log(row);
         let tutorial = {
           movies_genre_id: index+1,
-          movie_id: row[0],
+          movies_id: row[0],
           genre: row[1]
         };
 

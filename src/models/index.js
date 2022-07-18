@@ -22,7 +22,7 @@ db.sequelize = sequelize;
 
 db.tutorials = require("./tutorial.model.js")(sequelize, Sequelize);
 db.imdb_director = require("./imdb_directors")(sequelize, Sequelize);
-db.Imdb_movies = require("./imdb_movies")(sequelize, Sequelize);
+db.IMDBmovies = require("./imdb_movies")(sequelize, Sequelize);
 db.imdb_actor_role = require("./imdb_actor_roles")(sequelize,Sequelize)
 db.director_generes = require("./director_genere")(sequelize,Sequelize)
 db.movies_directors = require("./movie_dir")(sequelize,Sequelize);

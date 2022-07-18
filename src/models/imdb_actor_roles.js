@@ -20,7 +20,7 @@ module.exports = (sequelize, Sequelize) => {
             //     key: 'actor_id'
             // }
         },
-        movie_id: {
+        movies_id: {
             type: Sequelize.INTEGER,
             allowNull: false,
             // references: {

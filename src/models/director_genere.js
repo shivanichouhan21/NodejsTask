@@ -8,10 +8,10 @@ module.exports = (sequelize, Sequelize) => {
         director_id: {
             type: Sequelize.INTEGER,
             allowNull : false,
-            references: {
-                model: 'imdb_directors',
-                key: 'id'
-            }
+            // references: {
+            //     model: 'imdb_directors',
+            //     key: 'id'
+            // }
         },
         genre: {
             type: Sequelize.STRING

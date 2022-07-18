@@ -16,9 +16,9 @@ db.sequelize.sync();
 // genre_dir()
 // movies_director()
 // movies_genres()
-// upload_Imdb_movies()
+// movies_genres()
 // upload_movies_actor_role()
-upload()
+// upload_movies_actor_role()
 let port = 8000;
 app.listen(port, () => {
   console.log(`Running at localhost:${port}`);

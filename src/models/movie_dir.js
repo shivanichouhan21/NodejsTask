@@ -11,18 +11,18 @@ module.exports = (sequelize, Sequelize) => {
         director_id: {
             type: Sequelize.INTEGER,
             allowNull: false,
-            references: {
-                model: 'imdb_directors',
-                key: 'id'
-            }
+            // references: {
+            //     model: 'imdb_directors',
+            //     key: 'id'
+            // }
         },
         movie_id: {
             type: Sequelize.INTEGER,
             allowNull: false,
-            references: {
-                model: 'imdb_movies',
-                key: 'movies_id'
-            }
+            // references: {
+            //     model: 'imdb_movies',
+            //     key: 'movies_id'
+            // }
         }
     })
     Movie.belongsToMany(Actor, { through: movies_directors });
